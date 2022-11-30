@@ -1,5 +1,5 @@
 pipeline {
-    agent { kubernetes  }
+    agent { }
     stages {
         stage('Test') {
             steps {
