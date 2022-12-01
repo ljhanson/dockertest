@@ -40,7 +40,7 @@ spec:
         container(name: 'kaniko', shell: '/busybox/sh') {
 
           sh '''#!/busybox/sh
-            /kaniko/executor --context=git://github.com/ljhanson/dockertest.git --verbosity debug --dockerfile=./test/Dockerfile --destination ljhanson:ljhanson:test
+            /kaniko/executor --context=git://github.com/ljhanson/dockertest.git --verbosity debug --dockerfile=./test/Dockerfile --destination ljhanson/ljhanson:test
           '''
         }
       }
