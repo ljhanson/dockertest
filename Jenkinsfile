@@ -34,7 +34,7 @@ spec:
           steps {
           container('docker') {
           sh """
-             docker build -t test
+             docker build -t test/
           """
         }
       }
