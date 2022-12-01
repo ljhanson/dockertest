@@ -15,7 +15,7 @@ spec:
   serviceAccountName: jenkins-admin
   containers:
   - name: docker
-    image: docker:dind
+    image: docker:latest
     command:
     - cat
     tty: true
