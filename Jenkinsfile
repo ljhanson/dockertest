@@ -46,7 +46,7 @@ spec:
           """
 
           sh '''#!/busybox/sh
-            /kaniko/executor --context `pwd` --verbosity debug --destination cloudbees/jnlp-from-kaniko:latest
+            /kaniko/executor --context=https://github.com/ljhanson/dockertest.git --verbosity debug --destination ljhanson:ljhanson:test
           '''
         }
       }
