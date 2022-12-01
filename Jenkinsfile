@@ -33,7 +33,9 @@ spec:
           container('docker') {
           sh """
              env
+             ls -al /var/run
              docker info
+             docker build test
           """
         }
       }
