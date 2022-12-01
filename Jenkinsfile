@@ -1,7 +1,6 @@
 pipeline {
   agent {
     kubernetes {
-      label 'example-kaniko-volumes'
       yaml """
 kind: Pod
 metadata:
@@ -25,7 +24,7 @@ spec:
     projected:
       sources:
       - secret:
-          name: docker-credentials (1)
+          name: docker-credentials
           items:
             - key: .dockerconfigjson
               path: config.json
