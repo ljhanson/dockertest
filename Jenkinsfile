@@ -1,42 +1,54 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'jnlp'
+      label 'example-kaniko-volumes'
       yaml """
-apiVersion: v1
 kind: Pod
 metadata:
-labels:
-  component: ci
+  name: kaniko
 spec:
-  # Use service account that can deploy to all namespaces
-  serviceAccountName: jenkins-admin
   containers:
-  - name: docker
-    image: docker:latest
+  - name: jnlp
+    workingDir: /home/jenkins
+  - name: kaniko
+    workingDir: /home/jenkins
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
     command:
-    - cat
+    - /busybox/cat
     tty: true
     volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
   volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: docker-credentials (1)
+          items:
+            - key: .dockerconfigjson
+              path: config.json
 """
-}
-   }
+    }
+  }
   stages {
-        stage('Build') {
-          steps {
-          container('docker') {
-          sh """
-             env
-             ls -al /var/run
-             docker info
-             docker build test
+    stage('Build with Kaniko') {
+      environment {
+        PATH = "/busybox:/kaniko:$PATH"
+      }
+      steps {
+        container(name: 'kaniko', shell: '/busybox/sh') {
+
+          writeFile file: "Dockerfile", text: """
+            FROM jenkins/agent
+            MAINTAINER CloudBees Support Team <dse-team@cloudbees.com>
+            RUN mkdir /home/jenkins/.m2
           """
+
+          sh '''#!/busybox/sh
+            /kaniko/executor --context `pwd` --verbosity debug --destination cloudbees/jnlp-from-kaniko:latest
+          '''
         }
       }
     }
