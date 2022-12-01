@@ -9,9 +9,9 @@ metadata:
 spec:
   containers:
   - name: jnlp
-    workingDir: /home/jenkins
+    workingDir: /tmp/jenkins
   - name: kaniko
-    workingDir: /home/jenkins
+    workingDir: /tmp/jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
     command:
