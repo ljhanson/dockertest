@@ -39,12 +39,6 @@ spec:
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
 
-          writeFile file: "Dockerfile", text: """
-            FROM jenkins/agent
-            MAINTAINER CloudBees Support Team <dse-team@cloudbees.com>
-            RUN mkdir /home/jenkins/.m2
-          """
-
           sh '''#!/busybox/sh
             /kaniko/executor --context=https://github.com/ljhanson/dockertest.git --verbosity debug --destination ljhanson:ljhanson:test
           '''
