@@ -1,5 +1,3 @@
-
-
 pipeline {
   agent {
     kubernetes {
@@ -34,6 +32,7 @@ spec:
           steps {
           container('docker') {
           sh """
+             env
              docker info
           """
         }
